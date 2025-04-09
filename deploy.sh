@@ -10,17 +10,7 @@ git reset --hard origin/main
 echo "Installing dependencies..."
 npm install
 
-echo "Killing app if already running..."
-PORT=3000
-PID=$(lsof -ti tcp:$PORT)
-if [ -n "$PID" ]; then
-  echo "Killing process on port $PORT (PID: $PID)"
-  kill -9 $PID
-fi
-
-
-echo "Starting app..."
-echo "Checking and force killing anything on port 3000..."
+echo "Killing anything on port 3000..."
 PID=$(lsof -ti tcp:3000)
 if [ -n "$PID" ]; then
   echo "Force killing PID $PID"
@@ -28,4 +18,7 @@ if [ -n "$PID" ]; then
   sleep 1
 fi
 
-npm start
+echo "Starting app with PM2..."
+pm2 delete node-app || true
+pm2 start ./bin/www --name "node-app"
+pm2 save

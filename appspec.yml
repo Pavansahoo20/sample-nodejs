@@ -3,10 +3,11 @@ os: linux
 files:
   - source: /
     destination: /home/ec2-user/sample-nodejs
-
 hooks:
   BeforeInstall:
+    - location: scripts/clean.sh
+      runas: ec2-user
+  ApplicationStart:
     - location: deploy.sh
-      timeout: 300
       runas: ec2-user
 

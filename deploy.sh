@@ -18,6 +18,13 @@ if [ -n "$PID" ]; then
   sleep 1
 fi
 
+# ✅ Install PM2 if not already installed
+if ! command -v pm2 &> /dev/null
+then
+    echo "PM2 not found, installing globally..."
+    sudo npm install -g pm2
+fi
+
 echo "Starting app with PM2..."
 pm2 delete node-app || true
 pm2 start ./bin/www --name "node-app"

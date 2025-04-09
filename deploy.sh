@@ -20,4 +20,12 @@ fi
 
 
 echo "Starting app..."
+echo "Checking and force killing anything on port 3000..."
+PID=$(lsof -ti tcp:3000)
+if [ -n "$PID" ]; then
+  echo "Force killing PID $PID"
+  kill -9 $PID
+  sleep 1
+fi
+
 npm start
